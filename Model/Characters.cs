@@ -35,5 +35,15 @@ namespace GCPanelSeasonV.Model
 		{
 			get => ValueHelper.charColors[CharName];
 		}
+
+		public string LevelPercentage
+		{
+			get => ValueHelper.GetCharLevelPercentage(Level,ExpS4);
+		}
+
+		public Image Image
+		{
+			get => ValueHelper.charIcons[CharName];
+		}
 	}
 }

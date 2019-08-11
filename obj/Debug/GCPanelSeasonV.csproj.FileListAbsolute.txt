@@ -3,7 +3,6 @@ C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\bin\Debug\
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\bin\Debug\GCPanelSeasonV.pdb
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\bin\Debug\Dapper.dll
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\bin\Debug\Dapper.xml
-C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.csprojAssemblyReference.cache
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.Painel.resources
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.Properties.Resources.resources
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.csproj.GenerateResource.cache
@@ -11,3 +10,4 @@ C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.csproj.CopyComplete
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.exe
 C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.pdb
+C:\Users\William\Documents\Visual Studio 2019\Projects\GCPanelSeasonV\obj\Debug\GCPanelSeasonV.csprojAssemblyReference.cache

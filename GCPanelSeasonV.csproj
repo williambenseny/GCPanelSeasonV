@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>CS4014</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +53,7 @@
     <Compile Include="ConnectionHelper\Helper.cs" />
     <Compile Include="DataAccess.cs" />
     <Compile Include="Model\Characters.cs" />
+    <Compile Include="Model\CIGACharacterInfo.cs" />
     <Compile Include="Model\ConnectStatusDB.cs" />
     <Compile Include="Model\UIGAUserItem.cs" />
     <Compile Include="Model\UIGAUserItemAttribute.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -91,6 +94,60 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Elesis.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Amy_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Arme_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Dio_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Elesis_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Jin_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Lass_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Lin_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Lire_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Mari_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Rey_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Ronan_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Rufus_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Ryan_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Sieghart_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GC_Zero_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CASH.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VP.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

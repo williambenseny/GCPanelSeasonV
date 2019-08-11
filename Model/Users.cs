@@ -22,5 +22,10 @@ namespace GCPanelSeasonV.Model
 		public string IPAddress { get; set; }
 		public bool Connecting { get; set; }
 		public string Email { get; set; }
+
+		//Atributos customizados
+		public string NickName { get; set; }
+		public int Cash { get; set; }
+		public int VP { get; set; }
 	}
 }

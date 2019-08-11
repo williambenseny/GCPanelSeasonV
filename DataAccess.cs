@@ -49,6 +49,76 @@ namespace GCPanelSeasonV
 			}
 		}
 
+		public string GetNickName(Users user)
+		{
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					return connection.Query($"SELECT NickName FROM UNGAUserNickname where LoginUID = '{ user.LoginUID }'").First().NickName;
+				}
+				catch (InvalidOperationException noNickname)
+				{
+					return "Sem Apelido";
+				}
+			}
+		}
+
+		public List<int> GetCashAndVP(Users user)
+		{
+			int cash, vp;
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					cash = connection.Query($"SELECT Cash FROM CashUsers where Login = '{ user.Login }'").First().Cash;
+					vp = connection.Query($"SELECT VCPoint FROM VCGAVirtualCash where LoginUID = '{ user.LoginUID }'").First().VCPoint;
+					return new List<int>() { cash,vp };
+				}
+				catch (InvalidOperationException coinRetrieveError)
+				{
+					return new List<int>() { 0,0};
+				}
+			}
+		}
+
+		public bool ChangeNickName(Users user, string newNick)
+		{
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute($"UPDATE UNGAUserNickName SET NickName='{newNick}' WHERE LoginUID={user.LoginUID}");
+					user.NickName = newNick;
+					return true;
+				}
+				catch (System.Data.SqlClient.SqlException e)
+				{
+					return false;
+				}
+			}
+		}
+		/* Moedas */
+
+		public bool ChangeCash(Users user, int amount)
+		{
+			int newCashValue = user.Cash + amount;
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute($"UPDATE CashUsers SET Cash={newCashValue} WHERE Login='{user.Login}'");
+					user.Cash = newCashValue;
+					return true;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
+				}
+			}
+		}
+
 		/* Personagens */
 
 		public List<Characters> GetCharacters(int loginUID)
@@ -62,6 +132,39 @@ namespace GCPanelSeasonV
 				catch (InvalidOperationException noCharactersFound)
 				{
 					return new List<Characters>();
+				}
+			}
+		}
+
+		public List<CIGACharacterInfo> GetCIGACharactersInfo (int loginUID)
+		{
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					return connection.Query<CIGACharacterInfo>($"SELECT * FROM CIGACharacterInfo where LoginUID = '{ loginUID }'").ToList();
+				}
+				catch (InvalidOperationException noCharactersFound)
+				{
+					return new List<CIGACharacterInfo>();
+				}
+			}
+		}
+
+		public bool ChangeCharLevel(Users user, Characters character, int level, int exp)
+		{
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute($"UPDATE CHARACTERS SET Level={level} , ExpS4={exp}" +
+					$"WHERE Login='{user.Login}' AND CharType={character.CharType}");
+					return true;
+				}
+				catch(Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
 				}
 			}
 		}
