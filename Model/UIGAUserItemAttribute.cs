@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace GCPanelSeasonV.Model
 {
-	class UIGAUserItemAttribute
+	public class UIGAUserItemAttribute
 	{
-		public int LoginUID { get; set; }
-		public int ItemUID { get; set; }
+		//outros atributos são desnecessários pois são pegos no método e inputados como parametros na procedure
 		public int SlotID { get; set; }
 		public int TypeID { get; set; }
 		public int Value { get; set; }
-		public int AttributeState { get; set; }
 	}
 }

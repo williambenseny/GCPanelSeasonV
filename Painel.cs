@@ -30,7 +30,7 @@ namespace GCPanelSeasonV
 		{
 			InitializeComponent();
 			RetrieveServerInfoAsync();
-			PopulateComboboxes();
+			SetFixedValuesToCombosAndLists();
 		}
 
 		#region Métodos relacionados a informações do server
@@ -44,6 +44,7 @@ namespace GCPanelSeasonV
 				btn_AccountSearch.Enabled = true;
 				listBox_ServerInfo.DataSource = serverList;
 				listBox_ServerInfo.DisplayMember = "ServerInfoString";
+				lbl_SqlConnectionStatus.Visible = false;
 			}
 			else
 			{
@@ -107,10 +108,6 @@ namespace GCPanelSeasonV
 		{
 			int newLevel = (int)num_ChangeCharLevel.Value;
 			int exp = ValueHelper.LevelToExp[newLevel];
-			if (listView_Characters.SelectedIndices.Count > 0)
-			{
-				Console.Write(listView_Characters.SelectedIndices);
-			}
 
 			if (hasConfirmedChange("Confirmar alteração de nível?", "Alerta:"))
 			{
@@ -122,19 +119,83 @@ namespace GCPanelSeasonV
 					LoadCharactersToList();
 					listView_Characters.Items[charListLastSelectedIndex].Focused = true;
 					listView_Characters.Items[charListLastSelectedIndex].Selected = true;
+					displaySuccessMessage("Nível alterado");
+					return;
 				}
+				displayErrorMessage("Falha ao alterar nível");
 			}
 		}
 
+		private async void Btn_ClearDungeons_Click(object sender, EventArgs e)
+		{
+			await Task.Run(() => db.ClearAllDungeons(user, selectedCharacter.CharType));
+		}
 		#endregion
 
 
 		#region Métodos referentes a ITENS
-		private void Btn_AddItem_Click(object sender, EventArgs e)
+		private async void Btn_AddItem_Click(object sender, EventArgs e)
 		{
-			var grade = combo_Grade.SelectedValue;
-			Console.WriteLine(grade);
-			//db.AddItem(txt_LoginUID.Text, txt_ItemID.Text);
+			int grade = (int)combo_Grade.SelectedValue;
+			List<UIGAUserItemAttribute> itemAttributes = new List<UIGAUserItemAttribute>();
+			switch (grade)
+			{
+				case 1:
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr1.SelectedValue, Value = (int)num_ItemAttrVal1.Value, SlotID = 0 });
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr2.SelectedValue, Value = (int)num_ItemAttrVal2.Value, SlotID = 1 });
+					break;
+				case 2:
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr1.SelectedValue, Value = (int)num_ItemAttrVal1.Value, SlotID = 0 });
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr2.SelectedValue, Value = (int)num_ItemAttrVal2.Value, SlotID = 1 });
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr3.SelectedValue, Value = (int)num_ItemAttrVal3.Value, SlotID = 2 });
+					break;
+				case 3:
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr1.SelectedValue, Value = (int)num_ItemAttrVal1.Value, SlotID = 0 });
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr2.SelectedValue, Value = (int)num_ItemAttrVal2.Value, SlotID = 1 });
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr3.SelectedValue, Value = (int)num_ItemAttrVal3.Value, SlotID = 2 });
+					itemAttributes.Add(new UIGAUserItemAttribute { TypeID = (int)combo_ItemAttr4.SelectedValue, Value = (int)num_ItemAttrVal4.Value, SlotID = 3 });
+					break;
+			}
+			try
+			{
+				int selectedCharType = (int)combo_ItemCharType.SelectedValue;
+				if(await Task.Run(()=> db.AddItem(user, Convert.ToInt32(txt_ItemID.Text), selectedCharType, grade, itemAttributes)))
+				{
+					displaySuccessMessage("Item Adicionado");
+				}
+				else
+				{
+					displayErrorMessage("Houve um erro ao adicionar o item");
+				}
+			}
+			catch (FormatException)
+			{
+				displayErrorMessage("O formato do ItemID está incorreto");
+			}
+		}
+
+		private async void Btn_SearchItem_Click(object sender, EventArgs e)
+		{
+			string itemName = txt_SearchItemName.Text;
+			int charType = (int)combo_SearchItemCharType.SelectedValue;
+
+			listBox_FoundItems.DataSource = await Task.Run(() => db.searchItems(itemName, charType));
+
+			txt_ItemID.Text = ""; //evita a cópia automática do ID do primeiro item encontrado sem o user clicar em cima antes
+		}
+
+		private void ListBox_FoundItems_SelectedValueChanged(object sender, EventArgs e)
+		{
+			if (check_CopyItem.Checked)
+			{
+				if (listBox_FoundItems.SelectedValue != null)
+					txt_ItemID.Text = listBox_FoundItems.SelectedValue.ToString();
+			}
+
+			if (check_CopyCharacter.Checked)
+			{
+				combo_ItemCharType.SelectedIndex = (int)combo_SearchItemCharType.SelectedValue;
+			}
 
 		}
 		#endregion
@@ -154,10 +215,23 @@ namespace GCPanelSeasonV
 			if (num_ChangeCash.Value < 0)
 				AdcRem = "debitar";
 
-			if(MessageBox.Show($"Deseja {AdcRem} {num_ChangeCash.Value} CASH na conta de {user.NickName}?", "Alterar CASH",
-				MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-			{
+			if(hasConfirmedChange($"Deseja {AdcRem} {num_ChangeCash.Value} CASH na conta de {user.NickName}?", "Alterar CASH"))
+			{ 
 				if(db.ChangeCash(user, (int)num_ChangeCash.Value))
+				{
+					ShowAccountData();
+				}
+			}
+		}
+		private void Btn_ChangeVP_Click(object sender, EventArgs e)
+		{
+			string AdcRem = "adicionar";
+			if (num_ChangeVP.Value < 0)
+				AdcRem = "debitar";
+
+			if (hasConfirmedChange($"Deseja {AdcRem} {num_ChangeVP.Value} VP na conta de {user.NickName}?", "Alterar VP"))
+			{
+				if (db.ChangeVP(user, (int)num_ChangeVP.Value))
 				{
 					ShowAccountData();
 				}
@@ -174,13 +248,6 @@ namespace GCPanelSeasonV
 			listBox_ServerInfo.SelectedIndex = -1;
 		}
 
-		private void PopulateComboboxes()
-		{
-			combo_Grade.DataSource = ValueHelper.itemGrades;
-			combo_Grade.DisplayMember = "name";
-			combo_Grade.ValueMember = "grade";
-		}
-
 		/// <summary>
 		/// Exibe os valores recuperados da DB no form e exibe alguns componentes
 		/// </summary>
@@ -188,6 +255,7 @@ namespace GCPanelSeasonV
 		{
 			lbl_UserNickname.Text = user.NickName;
 			lbl_UserCASH.Text = user.Cash.ToString();
+			lbl_UserVP.Text = user.VP.ToString();
 			panel_UserInfo.Visible = true;
 			tabControlMain.Visible = true;
 		}
@@ -199,10 +267,10 @@ namespace GCPanelSeasonV
 		{
 			panel_UserInfo.Visible = false;
 
-			lbl_SelectedCharacterName.Text = "";
-			lbl_SelectedCharacterLevelAndPerc.Text = "";
-			lbl_SelectedCharacterJob.Text = "";
-			lbl_SelectedCharacterExpS4.Text = "";
+			lbl_CharacterName.Text = "";
+			lbl_CharacterLevelAndPerc.Text = "";
+			lbl_CharacterJob.Text = "";
+			lbl_CharacterExpS4.Text = "";
 			picture_SelectedCharacter.Image = null;
 			panel_SelectedCharacter.Visible = false;
 			tabControlMain.Visible = false;
@@ -220,10 +288,14 @@ namespace GCPanelSeasonV
 				index++;
 			}
 		}
-
 		private void ListView_Characters_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
 		{
-			if(listView_Characters.SelectedItems.Count == 1) //pois ListView seleciona "nada" antes de selecionar outro item.
+			ShowSelectedCharacterInfo();
+		}
+
+		private void ShowSelectedCharacterInfo()
+		{
+			if (listView_Characters.SelectedItems.Count == 1) //pois ListView seleciona "nada" antes de selecionar outro item.
 			{
 				charListLastSelectedIndex = listView_Characters.SelectedIndices[0]; // para uso posterior ao alterar lv
 
@@ -232,19 +304,87 @@ namespace GCPanelSeasonV
 				selectedCharacterCIGA = cigaCharactersInfo.Find(ch => ch.CharType == selectedCharacter.CharType);
 
 				picture_SelectedCharacter.Image = selectedCharacter.Image;
-				lbl_SelectedCharacterName.ForeColor = selectedCharacter.CharColor;
+				lbl_CharacterName.ForeColor = selectedCharacter.CharColor;
 
 				//labels
-				lbl_SelectedCharacterName.Text = selectedCharacter.CharName;
-				lbl_SelectedCharacterLevelAndPerc.Text = 
+				lbl_CharacterName.Text = selectedCharacter.CharName;
+				lbl_CharacterLevelAndPerc.Text =
 					$"Nível {selectedCharacter.Level}  ({selectedCharacter.LevelPercentage})";
-				lbl_SelectedCharacterJob.Text = $"{selectedCharacter.Promotion + 1}ª Classe";
-				lbl_SelectedCharacterExpS4.Text = $"{selectedCharacter.ExpS4} EXP";
+				lbl_CharacterJob.Text = $"{selectedCharacter.Promotion + 1}ª Classe";
+				lbl_CharacterExpS4.Text = $"{selectedCharacter.ExpS4} EXP";
+				lbl_CharacterWinLoss.Text = $"Win: {selectedCharacter.Win} | Lose: {selectedCharacter.Lose}";
 
-				lbl_SelectedCharacterCIGAGamePoint.Text = $"{selectedCharacterCIGA.GamePoint} GP";
-				lbl_CharInventorySize.Text = $"Inventário: {selectedCharacterCIGA.InvenSize}";
-				lbl_DefaultBonus.Text = $"{selectedCharacterCIGA.DefaultBonus} Recargas de Vida";
+				lbl_CharacterCIGAGamePoint.Text = $"{selectedCharacterCIGA.GamePoint} GP";
+				lbl_CharacterInventorySize.Text = $"Inventário: {selectedCharacterCIGA.InvenSize}";
+				lbl_CharacterDefaultBonus.Text = $"{selectedCharacterCIGA.DefaultBonus} Recargas de Vida";
 				panel_SelectedCharacter.Visible = true;
+			}
+		}
+
+		private void SetFixedValuesToCombosAndLists()
+		{
+			List<object> attr1 = new List<object>(ValueHelper.itemAttributes);
+			List<object> attr2 = new List<object>(ValueHelper.itemAttributes);
+			List<object> attr3 = new List<object>(ValueHelper.itemAttributes);
+			List<object> attr4 = new List<object>(ValueHelper.itemAttributes);
+			List<CharacterValues> addItemCharCombo = new List<CharacterValues>(ValueHelper.GetCharacterValues());
+			addItemCharCombo.RemoveAt(0); //remove a opção 'todos'
+			List<CharacterValues> searchItemCharCombo = new List<CharacterValues>(ValueHelper.GetCharacterValues());
+
+			combo_Grade.DataSource = ValueHelper.itemGrades;
+			combo_Grade.DisplayMember = "name";
+			combo_Grade.ValueMember = "grade";
+			combo_ItemAttr1.DataSource = attr1;
+			combo_ItemAttr1.DisplayMember = "name";
+			combo_ItemAttr1.ValueMember = "idAttr";
+			combo_ItemAttr2.DataSource = attr2;
+			combo_ItemAttr2.DisplayMember = "name";
+			combo_ItemAttr2.ValueMember = "idAttr";
+			combo_ItemAttr3.DataSource = attr3;
+			combo_ItemAttr3.DisplayMember = "name";
+			combo_ItemAttr3.ValueMember = "idAttr";
+			combo_ItemAttr4.DataSource = attr4;
+			combo_ItemAttr4.DisplayMember = "name";
+			combo_ItemAttr4.ValueMember = "idAttr";
+			combo_ItemCharType.DataSource = addItemCharCombo;
+			combo_ItemCharType.DisplayMember = "name";
+			combo_ItemCharType.ValueMember = "charType";
+			combo_SearchItemCharType.DataSource = searchItemCharCombo;
+			combo_SearchItemCharType.DisplayMember = "name";
+			combo_SearchItemCharType.ValueMember = "charType";
+			listBox_FoundItems.DisplayMember = "ItemText";
+			listBox_FoundItems.ValueMember = "GoodsID";
+		}
+		#endregion
+
+		private void Combo_Grade_SelectedValueChanged(object sender, EventArgs e)
+		{
+			switch (combo_Grade.SelectedValue)
+			{
+				case 0:
+					combo_ItemAttr1.Enabled = false; num_ItemAttrVal1.Enabled = false;
+					combo_ItemAttr2.Enabled = false; num_ItemAttrVal2.Enabled = false;
+					combo_ItemAttr3.Enabled = false; num_ItemAttrVal3.Enabled = false;
+					combo_ItemAttr4.Enabled = false; num_ItemAttrVal4.Enabled = false;
+				break;
+				case 1:
+					combo_ItemAttr1.Enabled = true; num_ItemAttrVal1.Enabled = true;
+					combo_ItemAttr2.Enabled = true; num_ItemAttrVal2.Enabled = true;
+					combo_ItemAttr3.Enabled = false; num_ItemAttrVal3.Enabled = false;
+					combo_ItemAttr4.Enabled = false; num_ItemAttrVal4.Enabled = false;
+					break;
+				case 2:
+					combo_ItemAttr1.Enabled = true; num_ItemAttrVal1.Enabled = true;
+					combo_ItemAttr2.Enabled = true; num_ItemAttrVal2.Enabled = true;
+					combo_ItemAttr3.Enabled = true; num_ItemAttrVal3.Enabled = true;
+					combo_ItemAttr4.Enabled = false; num_ItemAttrVal4.Enabled = false;
+					break;
+				case 3:
+					combo_ItemAttr1.Enabled = true; num_ItemAttrVal1.Enabled = true;
+					combo_ItemAttr2.Enabled = true; num_ItemAttrVal2.Enabled = true;
+					combo_ItemAttr3.Enabled = true; num_ItemAttrVal3.Enabled = true;
+					combo_ItemAttr4.Enabled = true; num_ItemAttrVal4.Enabled = true;
+					break;
 			}
 		}
 
@@ -254,6 +394,24 @@ namespace GCPanelSeasonV
 				return true;
 			return false;
 		}
-		#endregion
+
+		public void displayErrorMessage(string error)
+		{
+			MessageBox.Show(error, "ERRO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+		public void displaySuccessMessage(string message)
+		{
+			MessageBox.Show(message);
+		}
+
+		private void Btn_AttrInfo_Click(object sender, EventArgs e)
+		{
+			string attrDisclaimer = "1- Propriedades com ** NÃO terão valores considerados." +
+				"\n2- Propriedades com % recebem valores percentuais" +
+				"\n\n3- Você DEVE deixar TODAS as propriedades livres ou setar TODAS as disponíveis de acordo com a raridade." +
+				"\nSe houver mistura de Livre/Setada, o item bugará e não poderá ter as outras propriedades selecionadas a menos que sejam resetadas." +
+				"\n\nPor esse motivo, é recomendável OU setar todas as disponíveis, OU nenhuma.";
+			MessageBox.Show(attrDisclaimer, "Informações Sobre Propriedades", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
 	}
 }

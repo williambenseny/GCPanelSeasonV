@@ -11,6 +11,34 @@ namespace GCPanelSeasonV.Values
 
 	public static class ValueHelper
 	{
+		private static List<CharacterValues> charactersValues = new List<CharacterValues>()
+		{
+			new CharacterValues{charType = -1, name = "Todos"},
+			new CharacterValues{charType = 0, name = "Elesis", color = Color.FromArgb(145, 49, 80), icon = Resources.GC_Elesis_Icon},
+			new CharacterValues{charType = 1, name = "Lire", color = Color.FromArgb(16, 168, 5), icon = Resources.GC_Lire_Icon},
+			new CharacterValues{charType = 2, name = "Arme", color = Color.FromArgb(146, 14, 156), icon = Resources.GC_Arme_Icon},
+			new CharacterValues{charType = 3, name = "Lass", color = Color.FromArgb(16, 132, 204), icon = Resources.GC_Lass_Icon},
+			new CharacterValues{charType = 4, name = "Ryan", color = Color.FromArgb(196, 129, 4), icon = Resources.GC_Ryan_Icon},
+			new CharacterValues{charType = 5, name = "Ronan", color = Color.FromArgb(3, 3, 145), icon = Resources.GC_Ronan_Icon},
+			new CharacterValues{charType = 6, name = "Amy", color = Color.FromArgb(196, 4, 190), icon = Resources.GC_Amy_Icon},
+			new CharacterValues{charType = 7, name = "Jin", color = Color.FromArgb(186, 2, 26), icon = Resources.GC_Jin_Icon},
+			new CharacterValues{charType = 8, name = "Sieghart", color = Color.Black, icon = Resources.GC_Sieghart_Icon},
+			new CharacterValues{charType = 9, name = "Mari", color = Color.FromArgb(78, 110, 173), icon = Resources.GC_Mari_Icon},
+			new CharacterValues{charType = 10, name = "Dio", color = Color.FromArgb(101, 45, 125), icon = Resources.GC_Dio_Icon},
+			new CharacterValues{charType = 11, name = "Zero", color = Color.FromArgb(64, 135, 84), icon = Resources.GC_Zero_Icon},
+			new CharacterValues{charType = 12, name = "Rey", color = Color.FromArgb(163, 5, 155), icon = Resources.GC_Rey_Icon},
+			new CharacterValues{charType = 13, name = "Lupus", color = Color.FromArgb(78, 101, 102), icon = Resources.GC_Rufus_Icon},
+			new CharacterValues{charType = 14, name = "Lin", color = Color.FromArgb(78, 101, 102), icon = Resources.GC_Lin_Icon},
+			new CharacterValues{charType = 15, name = "Azin", color = Color.FromArgb(7, 157, 163), icon = Resources.GC_Elesis_Icon},
+			new CharacterValues{charType = 16, name = "Holy", color = Color.FromArgb(42, 163, 125), icon = Resources.GC_Elesis_Icon},
+			new CharacterValues{charType = 17, name = "Edel", color = Color.FromArgb(34, 121, 148), icon = Resources.GC_Elesis_Icon},
+			new CharacterValues{charType = 18, name = "Veigas", color = Color.FromArgb(68, 2, 97), icon = Resources.GC_Elesis_Icon},
+		};
+		public static List<CharacterValues> GetCharacterValues()
+		{
+			return charactersValues;
+		}
+
 		public static List<object> itemGrades = new List<object>()
 		{
 			new { name = "Normal", grade = 0 },
@@ -19,65 +47,76 @@ namespace GCPanelSeasonV.Values
 			new { name = "Lendário", grade = 3 },
 		};
 
-		public enum CharactersNames
+		public static List<object> charPromotion = new List<object>()
 		{
-			Elesis,Lire,Arme,Lass,Ryan,Ronan,Amy,Jin,Sieghart,Mari,
-			Dio,Zero,Rey,Lupus,Lin,Azin,Holy,Edel,Veigas,Uno
-		}
-
-		public static string GetCharNameByCharType(int charType)
-		{
-			return Enum.GetName(typeof(CharactersNames), charType);
-		}
-
-		public static Dictionary<string, Color> charColors = new Dictionary<string, Color>()
-		{
-			{CharactersNames.Elesis.ToString(), Color.FromArgb(145, 49, 80) },
-			{CharactersNames.Lire.ToString(), Color.FromArgb(40, 207, 6) },
-			{CharactersNames.Arme.ToString(), Color.FromArgb(146, 14, 156) },
-			{CharactersNames.Lass.ToString(), Color.FromArgb(16, 132, 204) },
-			{CharactersNames.Ryan.ToString(), Color.FromArgb(163, 128, 11) },
-			{CharactersNames.Ronan.ToString(), Color.FromArgb(3, 3, 145) },
-			{CharactersNames.Amy.ToString(), Color.FromArgb(196, 4, 190) },
-			{CharactersNames.Jin.ToString(), Color.FromArgb(186, 2, 26) },
-			{CharactersNames.Sieghart.ToString(), Color.Black },
-			{CharactersNames.Mari.ToString(), Color.FromArgb(78, 110, 173) },
-			{CharactersNames.Dio.ToString(), Color.FromArgb(101, 45, 125) },
-			{CharactersNames.Zero.ToString(), Color.FromArgb(64, 135, 84) },
-			{CharactersNames.Rey.ToString(), Color.FromArgb(163, 5, 155) },
-			{CharactersNames.Lupus.ToString(), Color.FromArgb(138, 41, 34) },
-			{CharactersNames.Lin.ToString(), Color.FromArgb(78, 101, 102) },
-			{CharactersNames.Azin.ToString(), Color.FromArgb(7, 157, 163) },
-			{CharactersNames.Holy.ToString(), Color.FromArgb(42, 163, 125) },
-			{CharactersNames.Edel.ToString(), Color.FromArgb(34, 121, 148) },
-			{CharactersNames.Veigas.ToString(), Color.FromArgb(68, 2, 97) },
-			{CharactersNames.Uno.ToString(), Color.Navy }
+			new { name = "1ª Classe", grade = 0 },
+			new { name = "2ª Classe", grade = 1 },
+			new { name = "3ª Classe", grade = 2 },
+			new { name = "4ª Classe", grade = 3 },
 		};
 
-		public static Dictionary<string, Image> charIcons = new Dictionary<string, Image>()
+		public static List<object> itemAttributes = new List<object>()
 		{
-			{CharactersNames.Elesis.ToString(), Resources.GC_Elesis_Icon },
-			{CharactersNames.Lire.ToString(), Resources.GC_Lire_Icon },
-			{CharactersNames.Arme.ToString(), Resources.GC_Arme_Icon },
-			{CharactersNames.Lass.ToString(), Resources.GC_Lass_Icon },
-			{CharactersNames.Ryan.ToString(), Resources.GC_Ryan_Icon },
-			{CharactersNames.Ronan.ToString(), Resources.GC_Ronan_Icon },
-			{CharactersNames.Amy.ToString(), Resources.GC_Amy_Icon },
-			{CharactersNames.Jin.ToString(), Resources.GC_Jin_Icon },
-			{CharactersNames.Sieghart.ToString(), Resources.GC_Sieghart_Icon },
-			{CharactersNames.Mari.ToString(), Resources.GC_Mari_Icon },
-			{CharactersNames.Dio.ToString(), Resources.GC_Dio_Icon },
-			{CharactersNames.Zero.ToString(), Resources.GC_Zero_Icon },
-			{CharactersNames.Rey.ToString(), Resources.GC_Rey_Icon },
-			{CharactersNames.Lupus.ToString(), Resources.GC_Rufus_Icon },
-			{CharactersNames.Lin.ToString(), Resources.GC_Lin_Icon },
-			{CharactersNames.Azin.ToString(), Resources.GC_Elesis_Icon },
-			{CharactersNames.Holy.ToString(), Resources.GC_Elesis_Icon },
-			{CharactersNames.Edel.ToString(), Resources.GC_Elesis_Icon },
-			{CharactersNames.Veigas.ToString(), Resources.GC_Elesis_Icon },
-			{CharactersNames.Uno.ToString(), Resources.GC_Elesis_Icon }
+			new { name = "LIVRE", idAttr = -1 },
+			new { name = "Ataque", idAttr = 0 },
+			new { name = "Defesa", idAttr = 1 },
+			new { name = "Vitalidade", idAttr = 2 },
+			new { name = "Atq. Especial", idAttr = 3 },
+			new { name = "Def. Especial", idAttr = 4 },
+			new { name = "Recup. HP", idAttr = 7 },
+			new { name = "Recup. MP", idAttr = 8 },
+			new { name = "Nível Minimo", idAttr = 9 },
+			new { name = "Bônus de GP", idAttr = 10 },
+			new { name = "Bônus de EXP", idAttr = 11 },
+			new { name = "Atq. Crítico", idAttr = 12 },
+			new { name = "Resist. Counter", idAttr = 13 },
+			new { name = "!Levant. Rolando", idAttr = 14 },
 		};
-		//Image myImage = Resources.myImage;
+
+		public static Dapper.DynamicParameters GetWIGAInsertItemParameters(int LoginUID, int charType, int itemID, int grade, int period, int duration)
+		{
+			Dapper.DynamicParameters queryParameters = new Dapper.DynamicParameters();
+			queryParameters.Add("@01iLoginUID_input", LoginUID);
+			queryParameters.Add("@02iCharType_input", charType);
+			queryParameters.Add("@03iItemID_input", itemID);
+			queryParameters.Add("@04iGradeID_input", grade);
+			queryParameters.Add("@05iPeriod_input", period);
+			queryParameters.Add("@06iDuration_input", duration);
+			queryParameters.Add("@07iGetType_input", 2);
+			queryParameters.Add("@08iStatus_input ", 2);
+			queryParameters.Add("@09iItemLevel_input", 0);
+			queryParameters.Add("@10iStrengthLevel_input", -1);
+			return queryParameters;
+		}
+		public static Dapper.DynamicParameters GetUIGAUserItemParameters(int LoginUID, int itemID, int grade, long wigaUid)
+		{
+			Dapper.DynamicParameters queryParameters = new Dapper.DynamicParameters();
+			queryParameters.Add("@01iLoginUID_input", LoginUID);
+			queryParameters.Add("@02iItemID_input", itemID);
+			queryParameters.Add("@03iGradeID_input", grade);
+			queryParameters.Add("@04iWIGAUID_input", wigaUid);
+			return queryParameters;
+		}
+
+		public static Dapper.DynamicParameters UIGAUserItemAttributeParameters(int LoginUID, int charType, long ItemUID, int slot, int type, int value, int active)
+		{
+			Dapper.DynamicParameters queryParameters = new Dapper.DynamicParameters();
+			queryParameters.Add("@01iLoginUID_input", LoginUID);
+			queryParameters.Add("@02iCharType_input", charType);
+			queryParameters.Add("@03iItemUID_input", ItemUID);
+			queryParameters.Add("@04iSlotID_input", slot);
+			queryParameters.Add("@05iTypeID_input", type);
+			queryParameters.Add("@06iValue_input", value * 10000); //besteira da KOG
+			queryParameters.Add("@07iAttributeState_input", active);
+			return queryParameters;
+		}
+
+		public static Dapper.DynamicParameters GetWIGAWaitItemDeleteParameters(long wigaUid)
+		{
+			Dapper.DynamicParameters queryParameters = new Dapper.DynamicParameters();
+			queryParameters.Add("@01iWIGAUID_input", wigaUid);
+			return queryParameters;
+		}
 
 		public static string GetCharLevelPercentage(int charLevel, int expS4)
 		{
@@ -92,8 +131,17 @@ namespace GCPanelSeasonV.Values
 				return (((double)summedExpInCurrentLevel / expDifferenceInLevels) * 100).ToString("0.00") + "%";
 			}
 			return "0.00%";
-
 		}
+
+		/// <summary>
+		/// Lista de Kinds que não podem receber propriedades
+		/// </summary>
+		public static List<int> NonPropertyItemKinds = new List<int>
+		{
+			17, //tornozeleira
+			18, //colar
+			19	//pedra mágica
+		};
 
 		public static Dictionary<int, int> LevelToExp = new Dictionary<int, int>()
 		{

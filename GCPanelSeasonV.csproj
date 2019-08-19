@@ -55,6 +55,7 @@
     <Compile Include="Model\Characters.cs" />
     <Compile Include="Model\CIGACharacterInfo.cs" />
     <Compile Include="Model\ConnectStatusDB.cs" />
+    <Compile Include="Model\GoodsInfoList.cs" />
     <Compile Include="Model\UIGAUserItem.cs" />
     <Compile Include="Model\UIGAUserItemAttribute.cs" />
     <Compile Include="Model\Users.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Converter.cs" />
+    <Compile Include="Values\CharacterValues.cs" />
     <Compile Include="Values\ValueHelper.cs" />
     <EmbeddedResource Include="Painel.resx">
       <DependentUpon>Painel.cs</DependentUpon>

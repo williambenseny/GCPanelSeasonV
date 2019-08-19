@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using Dapper;
-using System.Threading.Tasks;
 
 namespace GCPanelSeasonV
 {
@@ -39,7 +38,6 @@ namespace GCPanelSeasonV
 				try
 				{
 					Users user = connection.Query<Users>($"SELECT * FROM users where Login = '{ login }'").First();
-					Console.WriteLine(user.IPAddress);
 					return user;
 				}
 				catch (InvalidOperationException accountNotFound)
@@ -118,6 +116,25 @@ namespace GCPanelSeasonV
 				}
 			}
 		}
+		public bool ChangeVP(Users user, int amount)
+		{
+			int newVPValue = user.VP + amount;
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute($"UPDATE VCGAVirtualCash SET VCPoint={newVPValue} WHERE LoginUID='{user.LoginUID}'");
+					user.VP = newVPValue;
+					Console.WriteLine("bom! " + user.VP);
+					return true;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
+				}
+			}
+		}
 
 		/* Personagens */
 
@@ -169,22 +186,111 @@ namespace GCPanelSeasonV
 			}
 		}
 
-		/* Itens */
-		public void AddItem(int loginUID, string itemID)
+		public bool ClearAllDungeons(Users user, int charType)
 		{
-			int WIGAUID = GetNextAvailableWIGAUID();
 			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
 			{
-				connection.Execute($"INSERT INTO UIGAUserItem VALUES ({ loginUID },{ StrToInt(itemID) },0,CURRENT_TIMESTAMP,0,{ WIGAUID })");
+				for(int i = 7; i <= 95; i++)
+				{
+					try
+					{
+						connection.Execute($"INSERT INTO DCGADungeonClear VALUES({user.LoginUID},{charType},{i},0,CURRENT_TIMESTAMP)");
+					}
+					catch(Exception e)
+					{
+						Console.WriteLine(e.Message);
+					}
+
+				}
+				return true;
 			}
 		}
 
-		private int GetNextAvailableWIGAUID()
+		/* Itens */
+		public bool AddItem(Users user, int itemId, int charType, int grade, List<UIGAUserItemAttribute> itemAttributes)
 		{
 			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
 			{
-				int biggestWIGAUID = connection.Query<int>($"SELECT MAX(WIGAUID) FROM UIGAUserItem").First();
-				return biggestWIGAUID + 1;
+				try
+				{
+					//procedure 1(WIGAWaitItem_insert_20130402) - inserir item na lista de espera
+					DynamicParameters wigaInsertParameters = Values.ValueHelper.GetWIGAInsertItemParameters(user.LoginUID, charType, itemId, grade, -1, -1);
+					long nextWIGAUID = Convert.ToInt64(connection.Query("SELECT IDENT_CURRENT( 'WIGAWaitItem20130402' ) + 1 as WIGAUID").First().WIGAUID);
+					connection.Execute("WIGAWaitItem_insert_20130402", wigaInsertParameters, commandType: CommandType.StoredProcedure);
+
+					//procedure 2 (UIGAUserItem_merge_20130415) - adicionar na UIGAUserItem
+					DynamicParameters uigaUserItemParameters = Values.ValueHelper.GetUIGAUserItemParameters(user.LoginUID, itemId, grade, nextWIGAUID);
+					connection.Execute("UIGAUserItem_merge_20130415", uigaUserItemParameters, commandType: CommandType.StoredProcedure);
+
+					var insertedItemUID = (connection.Query
+					($"SELECT ItemUID FROM UIGAUserItem where LoginUID = {user.LoginUID} order by ItemUID desc").First().ItemUID);
+
+					//procedure 3(WIGAWaitItem_delete_20130402) - deletar item da lista de espera
+					DynamicParameters wigaDeleteParameters = Values.ValueHelper.GetWIGAWaitItemDeleteParameters(nextWIGAUID);
+					connection.Execute("WIGAWaitItem_delete_20130402", wigaDeleteParameters, commandType: CommandType.StoredProcedure);
+
+					//Inserir na tabela UIGAUseItemCharacter - adicionar ao personagem especifico p/ evitar erro de inventário
+					connection.Execute($"INSERT INTO UIGAUserItemCharacter VALUES ({user.LoginUID},{charType},{insertedItemUID})");
+
+
+					//Verificar se é um item que NÃO pode receber props (como Colares [kind=18], Tornozeleiras [kind=17] etc)
+					int kind = (connection.Query ($"SELECT Kind FROM GoodsInfoList where GoodsID = {itemId}").First().Kind);
+
+					if(!Values.ValueHelper.NonPropertyItemKinds.Contains(kind)) 
+						foreach (UIGAUserItemAttribute itemAttribute in itemAttributes)
+						{
+							AddItemAttribute(user.LoginUID, charType, insertedItemUID, itemAttribute);
+						}
+
+					return true;
+				}
+				catch(Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
+				}
+			}
+		}
+
+		private void AddItemAttribute(int LoginUID, int charType, long ItemUID, UIGAUserItemAttribute attr)
+		{
+			int active = 1;
+			if (attr.TypeID == -1) //garante que propriedade "livre" possa ser selecionada pelo usuário
+			{
+				attr.Value = 0;
+				active = 0;
+			}
+
+			DynamicParameters uigaUserItemParameters =
+				Values.ValueHelper.UIGAUserItemAttributeParameters(LoginUID, charType, ItemUID, attr.SlotID, attr.TypeID, attr.Value, active);
+
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute("UIGAUserItemAttribute_merge_20130415", uigaUserItemParameters, commandType: CommandType.StoredProcedure);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
+		}
+
+		public List<GoodsInfoList> searchItems(string name, int charType)
+		{
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					return connection.Query<GoodsInfoList>
+						($"SELECT * FROM GoodsInfoList where GoodsName Like '%{name}%' and CharType = {charType}").ToList();
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return null;
+				}
 			}
 		}
 

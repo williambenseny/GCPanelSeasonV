@@ -117,4 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="lbl_AboutPanelText.Text" xml:space="preserve">
+    <value>Este painel foi feito com o intuito de facilitar os controles gerais sobre contas de Grand Chase Season V EP. 1
+
+Por ser um painel voltado para SV EP1, ele conta com tratamento para inventários individuais, assim, não sendo possível adicionar itens
+para todos os personagens.
+
+É um projeto gratuito, open source e sem fins lucrativos, apenas para a prática de C#.
+A biblioteca utilizada para conexão com o SQL foi Dapper, não fazendo qualquer uso de Entity Framework por conveniência
+
+Observações:
+Como existem diversas DBs de Season V disponibilizadas, pode haver alguma inconsistência por parte do funcionamento;
+Se sua tabela GoodsInfoList estiver em coreano (ex, nomes estiverem ??? ????) a pesquisa de itens não retornará nada com nome especificado.
+Bugs e novas funcionalidades podem ser sugeridas via e-mail [gcwilliam98@hotmail.com]</value>
+  </data>
 </root>
