@@ -96,6 +96,7 @@ namespace GCPanelSeasonV
 				}
 			}
 		}
+
 		/* Moedas */
 
 		public bool ChangeCash(Users user, int amount)
@@ -125,7 +126,25 @@ namespace GCPanelSeasonV
 				{
 					connection.Execute($"UPDATE VCGAVirtualCash SET VCPoint={newVPValue} WHERE LoginUID='{user.LoginUID}'");
 					user.VP = newVPValue;
-					Console.WriteLine("bom! " + user.VP);
+					return true;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
+				}
+			}
+		}
+		public bool ChangeGP(Users user, CIGACharacterInfo character, int amount)
+		{
+			int newGPValue = character.GamePoint + amount;
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute($"UPDATE CIGACharacterInfo SET GamePoint={newGPValue}" +
+						$" WHERE LoginUID='{user.LoginUID}' and CharType = {character.CharType}");
+					character.GamePoint = newGPValue;
 					return true;
 				}
 				catch (Exception e)
@@ -186,7 +205,89 @@ namespace GCPanelSeasonV
 			}
 		}
 
-		public bool ClearAllDungeons(Users user, int charType)
+		public bool ChangeCharJob(Users user, Characters character, int promotion)
+		{
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute($"UPDATE CHARACTERS SET Promotion={promotion}"+
+					$"WHERE Login='{user.Login}' AND CharType={character.CharType}");
+					return true;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
+				}
+			}
+		}
+
+		public bool UnlockCharacter(Users user, int charType, int level, int promotion, int slotId)
+		{
+			int exp = Values.ValueHelper.LevelToExp[level];
+
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					if(charType == -1) //add todos
+					{
+						for(int i = 0; i < 19; i++)
+						{
+							try
+							{
+								connection.Execute($"INSERT INTO Characters VALUES" +
+								$"('{user.Login}',{i},{promotion},{exp},{level},0,0,{user.LoginUID},{exp})");
+
+								connection.Execute($"INSERT INTO CIGACharacterInfo VALUES" +
+									$"({user.LoginUID},{i},{i},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,2000,10,0,300,100)");
+							}
+							catch (System.Data.SqlClient.SqlException)
+							{ // Personagem já existe, não há tratamento necessário }
+							}
+						}
+					}
+					else //add especifico
+					{
+						connection.Execute($"INSERT INTO Characters VALUES" +
+							$"('{user.Login}',{charType},{promotion},{exp},{level},0,0,{user.LoginUID},{exp})");
+
+						connection.Execute($"INSERT INTO CIGACharacterInfo VALUES" +
+							$"({user.LoginUID},{charType},{slotId},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,2000,10,0,300,100)");
+
+						if (!UpdateUserSlot(user, slotId + 1))
+							return false;
+					}
+					return true;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
+				}
+			}
+		}
+
+		private bool UpdateUserSlot(Users user, int slotCount)
+		{
+			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
+			{
+				try
+				{
+					connection.Execute($"DELETE FROM UIGAUserInfoSlotCNT WHERE LOGINUID = {user.LoginUID}"); //garantia
+					connection.Execute($"INSERT INTO UIGAUserInfoSlotCNT VALUES ({user.LoginUID}, {slotCount})");
+					return true;
+				}
+				catch(Exception e)
+				{
+					Console.WriteLine(e.Message);
+					return false;
+				}
+			}
+		}
+
+		public bool ClearAllDungeons(Users user, Characters character)
 		{
 			using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(Helper.CnnString("gcDB")))
 			{
@@ -194,7 +295,7 @@ namespace GCPanelSeasonV
 				{
 					try
 					{
-						connection.Execute($"INSERT INTO DCGADungeonClear VALUES({user.LoginUID},{charType},{i},0,CURRENT_TIMESTAMP)");
+						connection.Execute($"INSERT INTO DCGADungeonClear VALUES({user.LoginUID},{character.CharType},{i},0,CURRENT_TIMESTAMP)");
 					}
 					catch(Exception e)
 					{

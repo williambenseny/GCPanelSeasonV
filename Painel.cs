@@ -2,11 +2,6 @@
 using GCPanelSeasonV.Model;
 using GCPanelSeasonV.Values;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -48,7 +43,7 @@ namespace GCPanelSeasonV
 			}
 			else
 			{
-				MessageBox.Show("Não foi possível estabelecer conexão com o servidor");
+				displayErrorMessage("Não foi possível estabelecer conexão com o servidor");
 			}
 		}
 
@@ -72,7 +67,7 @@ namespace GCPanelSeasonV
 			}
 			else
 			{
-				MessageBox.Show("Login não encontrado");
+				displayErrorMessage("Login não encontrado");
 			}
 		}
 
@@ -86,11 +81,11 @@ namespace GCPanelSeasonV
 			if(db.ChangeNickName(user, txt_ChangeNick.Text))
 			{
 				ShowAccountData();
-				MessageBox.Show("Apelido Alterado");
+				displaySuccessMessage("Apelido Alterado");
 			}
 			else
 			{
-				MessageBox.Show("Falha ao alterar apelido");
+				displayErrorMessage("Falha ao alterar apelido");
 			}
 		}
 
@@ -116,9 +111,7 @@ namespace GCPanelSeasonV
 					selectedCharacter.ExpS4 = exp;
 					selectedCharacter.Exp = exp;
 					selectedCharacter.Level = newLevel;
-					LoadCharactersToList();
-					listView_Characters.Items[charListLastSelectedIndex].Focused = true;
-					listView_Characters.Items[charListLastSelectedIndex].Selected = true;
+					ReselectCharacterOnList();
 					displaySuccessMessage("Nível alterado");
 					return;
 				}
@@ -126,9 +119,61 @@ namespace GCPanelSeasonV
 			}
 		}
 
+		private void Btn_ChangeCharJob_Click(object sender, EventArgs e)
+		{
+			int newJob = (int)num_ChangeCharJob.Value - 1;
+
+			if (hasConfirmedChange("Confirmar alteração de classe?", "Alerta:"))
+			{
+				if (db.ChangeCharJob(user, selectedCharacter, newJob))
+				{
+					selectedCharacter.Promotion = newJob;
+					ReselectCharacterOnList();
+					displaySuccessMessage("Classe alterada");
+					return;
+				}
+				displayErrorMessage("Falha ao alterar classe");
+			}
+		}
+
+		private async void Btn_UnlockCharacter_Click(object sender, EventArgs e)
+		{
+			int charType = (int)combo_UnlockCharacter.SelectedValue;
+			string charName = ValueHelper.GetCharacterName(charType);
+			string appendCustomInfo = "";
+			int level = 1;
+			int promotion = 0;
+			int slotId = cigaCharactersInfo.Count;
+
+			if (check_UnlockCharacterLevel.Checked)
+			{
+				appendCustomInfo += $"{check_UnlockCharacterLevel.Text} ";
+				level = 85;
+			}
+			if (check_UnlockCharacterMaxJob.Checked)
+			{
+				appendCustomInfo += $"{check_UnlockCharacterMaxJob.Text} ";
+				promotion = 3;
+			}
+
+			if (hasConfirmedChange($"Deseja abrir {charName} {appendCustomInfo}para {user.NickName}?", "Desbloquear"))
+			{
+				if(await Task.Run(() => db.UnlockCharacter(user, charType, level, promotion, slotId)))
+				{
+					await GetCharacters();
+					LoadCharactersToList();
+					displaySuccessMessage($"{charName} adicionado");
+				}
+				else
+				{
+					displayErrorMessage("Erro ao adicionar personagem");
+				}
+			}
+		}
+
 		private async void Btn_ClearDungeons_Click(object sender, EventArgs e)
 		{
-			await Task.Run(() => db.ClearAllDungeons(user, selectedCharacter.CharType));
+			await Task.Run(() => db.ClearAllDungeons(user, selectedCharacter));
 		}
 		#endregion
 
@@ -171,6 +216,10 @@ namespace GCPanelSeasonV
 			catch (FormatException)
 			{
 				displayErrorMessage("O formato do ItemID está incorreto");
+			}
+			catch (NullReferenceException)
+			{
+				displayErrorMessage("Selecione um personagem");
 			}
 		}
 
@@ -236,6 +285,25 @@ namespace GCPanelSeasonV
 					ShowAccountData();
 				}
 			}
+		}
+		private void Btn_ChangeGP_Click(object sender, EventArgs e)
+		{
+			if(selectedCharacterCIGA != null)
+			{
+				string AdcRem = "adicionar";
+				if (num_ChangeGP.Value < 0)
+					AdcRem = "debitar";
+
+				if (hasConfirmedChange($"Deseja {AdcRem} {num_ChangeGP.Value} GP para o personagem selecionado" +
+					$" na conta de {user.NickName}?", "Alterar GP"))
+				{
+					if (db.ChangeGP(user, selectedCharacterCIGA, (int)num_ChangeGP.Value))
+					{
+						ShowAccountData();
+						ReselectCharacterOnList();
+					}
+				}
+			}		
 		}
 
 		#endregion
@@ -328,6 +396,7 @@ namespace GCPanelSeasonV
 			List<object> attr3 = new List<object>(ValueHelper.itemAttributes);
 			List<object> attr4 = new List<object>(ValueHelper.itemAttributes);
 			List<CharacterValues> addItemCharCombo = new List<CharacterValues>(ValueHelper.GetCharacterValues());
+			List<CharacterValues> unlockCharacters = new List<CharacterValues>(ValueHelper.GetCharacterValues());
 			addItemCharCombo.RemoveAt(0); //remove a opção 'todos'
 			List<CharacterValues> searchItemCharCombo = new List<CharacterValues>(ValueHelper.GetCharacterValues());
 
@@ -352,6 +421,9 @@ namespace GCPanelSeasonV
 			combo_SearchItemCharType.DataSource = searchItemCharCombo;
 			combo_SearchItemCharType.DisplayMember = "name";
 			combo_SearchItemCharType.ValueMember = "charType";
+			combo_UnlockCharacter.DataSource = unlockCharacters;
+			combo_UnlockCharacter.DisplayMember = "name";
+			combo_UnlockCharacter.ValueMember = "charType";
 			listBox_FoundItems.DisplayMember = "ItemText";
 			listBox_FoundItems.ValueMember = "GoodsID";
 		}
@@ -388,20 +460,27 @@ namespace GCPanelSeasonV
 			}
 		}
 
-		public bool hasConfirmedChange(string text, string caption)
+		private bool hasConfirmedChange(string text, string caption)
 		{
 			if (MessageBox.Show(text, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 				return true;
 			return false;
 		}
 
-		public void displayErrorMessage(string error)
+		private void displayErrorMessage(string error)
 		{
 			MessageBox.Show(error, "ERRO", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
-		public void displaySuccessMessage(string message)
+		private void displaySuccessMessage(string message)
 		{
 			MessageBox.Show(message);
+		}
+
+		private void ReselectCharacterOnList()
+		{
+			LoadCharactersToList();
+			listView_Characters.Items[charListLastSelectedIndex].Focused = true;
+			listView_Characters.Items[charListLastSelectedIndex].Selected = true;
 		}
 
 		private void Btn_AttrInfo_Click(object sender, EventArgs e)

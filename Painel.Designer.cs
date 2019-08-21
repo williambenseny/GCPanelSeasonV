@@ -48,6 +48,9 @@
 			this.tabCharacters = new System.Windows.Forms.TabPage();
 			this.lbl_CoinsPanel = new System.Windows.Forms.Label();
 			this.panel_Coins = new System.Windows.Forms.Panel();
+			this.btn_ChangeGP = new System.Windows.Forms.Button();
+			this.lbl_ChangeGP = new System.Windows.Forms.Label();
+			this.num_ChangeGP = new System.Windows.Forms.NumericUpDown();
 			this.btn_ChangeVP = new System.Windows.Forms.Button();
 			this.lbl_ChangeVP = new System.Windows.Forms.Label();
 			this.num_ChangeVP = new System.Windows.Forms.NumericUpDown();
@@ -55,6 +58,10 @@
 			this.lbl_ChangeCash = new System.Windows.Forms.Label();
 			this.num_ChangeCash = new System.Windows.Forms.NumericUpDown();
 			this.panel_SelectedCharacter = new System.Windows.Forms.Panel();
+			this.num_ChangeCharJob = new System.Windows.Forms.NumericUpDown();
+			this.btn_ChangeCharJob = new System.Windows.Forms.Button();
+			this.lbl_ChangeCharJob = new System.Windows.Forms.Label();
+			this.btn_ClearDungeons = new System.Windows.Forms.Button();
 			this.btn_ChangeCharLevel = new System.Windows.Forms.Button();
 			this.lbl_ChangeCharLevel = new System.Windows.Forms.Label();
 			this.lbl_SelectedCharacterPanelDivision2 = new System.Windows.Forms.Label();
@@ -117,14 +124,26 @@
 			this.lbl_UserCASH = new System.Windows.Forms.Label();
 			this.picture_CASH = new System.Windows.Forms.PictureBox();
 			this.lbl_UserNickname = new System.Windows.Forms.Label();
-			this.btn_ClearDungeons = new System.Windows.Forms.Button();
+			this.tabControlItems = new System.Windows.Forms.TabControl();
+			this.tabItemsPets = new System.Windows.Forms.TabPage();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.lbl_UsefulItems = new System.Windows.Forms.Label();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.lbl_CharactersTools = new System.Windows.Forms.Label();
+			this.lbl_UnlockCharacter = new System.Windows.Forms.Label();
+			this.combo_UnlockCharacter = new System.Windows.Forms.ComboBox();
+			this.btn_UnlockCharacter = new System.Windows.Forms.Button();
+			this.check_UnlockCharacterLevel = new System.Windows.Forms.CheckBox();
+			this.check_UnlockCharacterMaxJob = new System.Windows.Forms.CheckBox();
 			this.headerPanel.SuspendLayout();
 			this.tabControlMain.SuspendLayout();
 			this.tabCharacters.SuspendLayout();
 			this.panel_Coins.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_ChangeGP)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_ChangeVP)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_ChangeCash)).BeginInit();
 			this.panel_SelectedCharacter.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_ChangeCharJob)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_ChangeCharLevel)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picture_SelectedCharacter)).BeginInit();
 			this.tabItems.SuspendLayout();
@@ -139,6 +158,8 @@
 			this.panel_UserInfo.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picture_VP)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picture_CASH)).BeginInit();
+			this.tabControlItems.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lbl_ItemID
@@ -321,6 +342,8 @@
 			// 
 			// tabCharacters
 			// 
+			this.tabCharacters.Controls.Add(this.lbl_CharactersTools);
+			this.tabCharacters.Controls.Add(this.panel1);
 			this.tabCharacters.Controls.Add(this.lbl_CoinsPanel);
 			this.tabCharacters.Controls.Add(this.panel_Coins);
 			this.tabCharacters.Controls.Add(this.panel_SelectedCharacter);
@@ -349,6 +372,9 @@
 			// 
 			this.panel_Coins.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
 			this.panel_Coins.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel_Coins.Controls.Add(this.btn_ChangeGP);
+			this.panel_Coins.Controls.Add(this.lbl_ChangeGP);
+			this.panel_Coins.Controls.Add(this.num_ChangeGP);
 			this.panel_Coins.Controls.Add(this.btn_ChangeVP);
 			this.panel_Coins.Controls.Add(this.lbl_ChangeVP);
 			this.panel_Coins.Controls.Add(this.num_ChangeVP);
@@ -357,8 +383,46 @@
 			this.panel_Coins.Controls.Add(this.num_ChangeCash);
 			this.panel_Coins.Location = new System.Drawing.Point(776, 23);
 			this.panel_Coins.Name = "panel_Coins";
-			this.panel_Coins.Size = new System.Drawing.Size(229, 201);
+			this.panel_Coins.Size = new System.Drawing.Size(229, 157);
 			this.panel_Coins.TabIndex = 17;
+			// 
+			// btn_ChangeGP
+			// 
+			this.btn_ChangeGP.Location = new System.Drawing.Point(138, 115);
+			this.btn_ChangeGP.Name = "btn_ChangeGP";
+			this.btn_ChangeGP.Size = new System.Drawing.Size(72, 25);
+			this.btn_ChangeGP.TabIndex = 26;
+			this.btn_ChangeGP.Text = "Adic.";
+			this.btn_ChangeGP.UseVisualStyleBackColor = true;
+			this.btn_ChangeGP.Click += new System.EventHandler(this.Btn_ChangeGP_Click);
+			// 
+			// lbl_ChangeGP
+			// 
+			this.lbl_ChangeGP.AutoSize = true;
+			this.lbl_ChangeGP.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_ChangeGP.Location = new System.Drawing.Point(14, 99);
+			this.lbl_ChangeGP.Name = "lbl_ChangeGP";
+			this.lbl_ChangeGP.Size = new System.Drawing.Size(205, 17);
+			this.lbl_ChangeGP.TabIndex = 25;
+			this.lbl_ChangeGP.Text = "GP (Personagem Selecionado)";
+			// 
+			// num_ChangeGP
+			// 
+			this.num_ChangeGP.Location = new System.Drawing.Point(17, 116);
+			this.num_ChangeGP.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+			this.num_ChangeGP.Minimum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            -2147483648});
+			this.num_ChangeGP.Name = "num_ChangeGP";
+			this.num_ChangeGP.Size = new System.Drawing.Size(115, 23);
+			this.num_ChangeGP.TabIndex = 24;
+			this.num_ChangeGP.ThousandsSeparator = true;
 			// 
 			// btn_ChangeVP
 			// 
@@ -376,9 +440,9 @@
 			this.lbl_ChangeVP.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lbl_ChangeVP.Location = new System.Drawing.Point(14, 50);
 			this.lbl_ChangeVP.Name = "lbl_ChangeVP";
-			this.lbl_ChangeVP.Size = new System.Drawing.Size(25, 17);
+			this.lbl_ChangeVP.Size = new System.Drawing.Size(75, 17);
 			this.lbl_ChangeVP.TabIndex = 22;
-			this.lbl_ChangeVP.Text = "VP";
+			this.lbl_ChangeVP.Text = "VP (Todos)";
 			// 
 			// num_ChangeVP
 			// 
@@ -414,9 +478,9 @@
 			this.lbl_ChangeCash.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lbl_ChangeCash.Location = new System.Drawing.Point(14, 5);
 			this.lbl_ChangeCash.Name = "lbl_ChangeCash";
-			this.lbl_ChangeCash.Size = new System.Drawing.Size(43, 17);
+			this.lbl_ChangeCash.Size = new System.Drawing.Size(93, 17);
 			this.lbl_ChangeCash.TabIndex = 19;
-			this.lbl_ChangeCash.Text = "CASH";
+			this.lbl_ChangeCash.Text = "CASH (Todos)";
 			// 
 			// num_ChangeCash
 			// 
@@ -440,6 +504,9 @@
 			// 
 			this.panel_SelectedCharacter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
 			this.panel_SelectedCharacter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel_SelectedCharacter.Controls.Add(this.num_ChangeCharJob);
+			this.panel_SelectedCharacter.Controls.Add(this.btn_ChangeCharJob);
+			this.panel_SelectedCharacter.Controls.Add(this.lbl_ChangeCharJob);
 			this.panel_SelectedCharacter.Controls.Add(this.btn_ClearDungeons);
 			this.panel_SelectedCharacter.Controls.Add(this.btn_ChangeCharLevel);
 			this.panel_SelectedCharacter.Controls.Add(this.lbl_ChangeCharLevel);
@@ -461,9 +528,61 @@
 			this.panel_SelectedCharacter.TabIndex = 15;
 			this.panel_SelectedCharacter.Visible = false;
 			// 
+			// num_ChangeCharJob
+			// 
+			this.num_ChangeCharJob.Location = new System.Drawing.Point(53, 274);
+			this.num_ChangeCharJob.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+			this.num_ChangeCharJob.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.num_ChangeCharJob.Name = "num_ChangeCharJob";
+			this.num_ChangeCharJob.Size = new System.Drawing.Size(49, 23);
+			this.num_ChangeCharJob.TabIndex = 26;
+			this.num_ChangeCharJob.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			// 
+			// btn_ChangeCharJob
+			// 
+			this.btn_ChangeCharJob.Location = new System.Drawing.Point(107, 273);
+			this.btn_ChangeCharJob.Name = "btn_ChangeCharJob";
+			this.btn_ChangeCharJob.Size = new System.Drawing.Size(72, 25);
+			this.btn_ChangeCharJob.TabIndex = 24;
+			this.btn_ChangeCharJob.Text = "Alterar";
+			this.btn_ChangeCharJob.UseVisualStyleBackColor = true;
+			this.btn_ChangeCharJob.Click += new System.EventHandler(this.Btn_ChangeCharJob_Click);
+			// 
+			// lbl_ChangeCharJob
+			// 
+			this.lbl_ChangeCharJob.AutoSize = true;
+			this.lbl_ChangeCharJob.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_ChangeCharJob.Location = new System.Drawing.Point(49, 254);
+			this.lbl_ChangeCharJob.Name = "lbl_ChangeCharJob";
+			this.lbl_ChangeCharJob.Size = new System.Drawing.Size(95, 17);
+			this.lbl_ChangeCharJob.TabIndex = 25;
+			this.lbl_ChangeCharJob.Text = "Alterar Classe";
+			// 
+			// btn_ClearDungeons
+			// 
+			this.btn_ClearDungeons.Location = new System.Drawing.Point(17, 435);
+			this.btn_ClearDungeons.Name = "btn_ClearDungeons";
+			this.btn_ClearDungeons.Size = new System.Drawing.Size(200, 23);
+			this.btn_ClearDungeons.TabIndex = 19;
+			this.btn_ClearDungeons.Text = "Abrir todas as missões";
+			this.btn_ClearDungeons.UseVisualStyleBackColor = true;
+			this.btn_ClearDungeons.Click += new System.EventHandler(this.Btn_ClearDungeons_Click);
+			// 
 			// btn_ChangeCharLevel
 			// 
-			this.btn_ChangeCharLevel.Location = new System.Drawing.Point(114, 220);
+			this.btn_ChangeCharLevel.Location = new System.Drawing.Point(107, 217);
 			this.btn_ChangeCharLevel.Name = "btn_ChangeCharLevel";
 			this.btn_ChangeCharLevel.Size = new System.Drawing.Size(72, 25);
 			this.btn_ChangeCharLevel.TabIndex = 21;
@@ -475,7 +594,7 @@
 			// 
 			this.lbl_ChangeCharLevel.AutoSize = true;
 			this.lbl_ChangeCharLevel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lbl_ChangeCharLevel.Location = new System.Drawing.Point(47, 202);
+			this.lbl_ChangeCharLevel.Location = new System.Drawing.Point(49, 199);
 			this.lbl_ChangeCharLevel.Name = "lbl_ChangeCharLevel";
 			this.lbl_ChangeCharLevel.Size = new System.Drawing.Size(86, 17);
 			this.lbl_ChangeCharLevel.TabIndex = 21;
@@ -492,14 +611,14 @@
 			// 
 			// num_ChangeCharLevel
 			// 
-			this.num_ChangeCharLevel.Location = new System.Drawing.Point(50, 221);
+			this.num_ChangeCharLevel.Location = new System.Drawing.Point(52, 219);
 			this.num_ChangeCharLevel.Maximum = new decimal(new int[] {
             85,
             0,
             0,
             0});
 			this.num_ChangeCharLevel.Name = "num_ChangeCharLevel";
-			this.num_ChangeCharLevel.Size = new System.Drawing.Size(57, 23);
+			this.num_ChangeCharLevel.Size = new System.Drawing.Size(49, 23);
 			this.num_ChangeCharLevel.TabIndex = 21;
 			// 
 			// picture_SelectedCharacter
@@ -517,9 +636,9 @@
 			this.lbl_CharacterDefaultBonus.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lbl_CharacterDefaultBonus.Location = new System.Drawing.Point(16, 156);
 			this.lbl_CharacterDefaultBonus.Name = "lbl_CharacterDefaultBonus";
-			this.lbl_CharacterDefaultBonus.Size = new System.Drawing.Size(122, 17);
+			this.lbl_CharacterDefaultBonus.Size = new System.Drawing.Size(124, 17);
 			this.lbl_CharacterDefaultBonus.TabIndex = 18;
-			this.lbl_CharacterDefaultBonus.Text = "CharInventorySize";
+			this.lbl_CharacterDefaultBonus.Text = "CharDefaultBonus";
 			// 
 			// lbl_CharacterInventorySize
 			// 
@@ -642,6 +761,8 @@
 			// 
 			this.panel_SearchItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
 			this.panel_SearchItem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel_SearchItem.Controls.Add(this.lbl_UsefulItems);
+			this.panel_SearchItem.Controls.Add(this.tabControlItems);
 			this.panel_SearchItem.Controls.Add(this.check_CopyItem);
 			this.panel_SearchItem.Controls.Add(this.check_CopyCharacter);
 			this.panel_SearchItem.Controls.Add(this.lbl_SearchItemChar);
@@ -650,9 +771,9 @@
 			this.panel_SearchItem.Controls.Add(this.combo_SearchItemCharType);
 			this.panel_SearchItem.Controls.Add(this.txt_SearchItemName);
 			this.panel_SearchItem.Controls.Add(this.listBox_FoundItems);
-			this.panel_SearchItem.Location = new System.Drawing.Point(637, 24);
+			this.panel_SearchItem.Location = new System.Drawing.Point(678, 24);
 			this.panel_SearchItem.Name = "panel_SearchItem";
-			this.panel_SearchItem.Size = new System.Drawing.Size(368, 333);
+			this.panel_SearchItem.Size = new System.Drawing.Size(327, 483);
 			this.panel_SearchItem.TabIndex = 11;
 			// 
 			// check_CopyItem
@@ -660,11 +781,11 @@
 			this.check_CopyItem.AutoSize = true;
 			this.check_CopyItem.Checked = true;
 			this.check_CopyItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.check_CopyItem.Location = new System.Drawing.Point(13, 98);
+			this.check_CopyItem.Location = new System.Drawing.Point(17, 98);
 			this.check_CopyItem.Name = "check_CopyItem";
-			this.check_CopyItem.Size = new System.Drawing.Size(336, 21);
+			this.check_CopyItem.Size = new System.Drawing.Size(212, 21);
 			this.check_CopyItem.TabIndex = 44;
-			this.check_CopyItem.Text = "Copiar ID automaticamente ao clicar em cima\r\n";
+			this.check_CopyItem.Text = "Copiar ID ao clicar em cima\r\n";
 			this.check_CopyItem.UseVisualStyleBackColor = true;
 			// 
 			// check_CopyCharacter
@@ -672,17 +793,17 @@
 			this.check_CopyCharacter.AutoSize = true;
 			this.check_CopyCharacter.Checked = true;
 			this.check_CopyCharacter.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.check_CopyCharacter.Location = new System.Drawing.Point(13, 120);
+			this.check_CopyCharacter.Location = new System.Drawing.Point(17, 120);
 			this.check_CopyCharacter.Name = "check_CopyCharacter";
-			this.check_CopyCharacter.Size = new System.Drawing.Size(345, 21);
+			this.check_CopyCharacter.Size = new System.Drawing.Size(221, 21);
 			this.check_CopyCharacter.TabIndex = 43;
-			this.check_CopyCharacter.Text = "Selec. pers. automaticamente ao clicar em cima";
+			this.check_CopyCharacter.Text = "Selec. pers. ao clicar em cima";
 			this.check_CopyCharacter.UseVisualStyleBackColor = true;
 			// 
 			// lbl_SearchItemChar
 			// 
 			this.lbl_SearchItemChar.AutoSize = true;
-			this.lbl_SearchItemChar.Location = new System.Drawing.Point(265, 4);
+			this.lbl_SearchItemChar.Location = new System.Drawing.Point(228, 4);
 			this.lbl_SearchItemChar.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
 			this.lbl_SearchItemChar.Name = "lbl_SearchItemChar";
 			this.lbl_SearchItemChar.Size = new System.Drawing.Size(89, 17);
@@ -701,7 +822,7 @@
 			// 
 			// btn_SearchItem
 			// 
-			this.btn_SearchItem.Location = new System.Drawing.Point(111, 58);
+			this.btn_SearchItem.Location = new System.Drawing.Point(98, 58);
 			this.btn_SearchItem.Name = "btn_SearchItem";
 			this.btn_SearchItem.Size = new System.Drawing.Size(140, 29);
 			this.btn_SearchItem.TabIndex = 40;
@@ -712,7 +833,7 @@
 			// combo_SearchItemCharType
 			// 
 			this.combo_SearchItemCharType.FormattingEnabled = true;
-			this.combo_SearchItemCharType.Location = new System.Drawing.Point(196, 23);
+			this.combo_SearchItemCharType.Location = new System.Drawing.Point(159, 23);
 			this.combo_SearchItemCharType.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.combo_SearchItemCharType.Name = "combo_SearchItemCharType";
 			this.combo_SearchItemCharType.Size = new System.Drawing.Size(155, 25);
@@ -722,16 +843,16 @@
 			// 
 			this.txt_SearchItemName.Location = new System.Drawing.Point(13, 24);
 			this.txt_SearchItemName.Name = "txt_SearchItemName";
-			this.txt_SearchItemName.Size = new System.Drawing.Size(175, 23);
+			this.txt_SearchItemName.Size = new System.Drawing.Size(141, 23);
 			this.txt_SearchItemName.TabIndex = 1;
 			// 
 			// listBox_FoundItems
 			// 
 			this.listBox_FoundItems.FormattingEnabled = true;
 			this.listBox_FoundItems.ItemHeight = 17;
-			this.listBox_FoundItems.Location = new System.Drawing.Point(14, 162);
+			this.listBox_FoundItems.Location = new System.Drawing.Point(13, 147);
 			this.listBox_FoundItems.Name = "listBox_FoundItems";
-			this.listBox_FoundItems.Size = new System.Drawing.Size(337, 157);
+			this.listBox_FoundItems.Size = new System.Drawing.Size(299, 140);
 			this.listBox_FoundItems.TabIndex = 0;
 			this.listBox_FoundItems.SelectedValueChanged += new System.EventHandler(this.ListBox_FoundItems_SelectedValueChanged);
 			// 
@@ -1134,15 +1255,117 @@
 			this.lbl_UserNickname.TabIndex = 0;
 			this.lbl_UserNickname.Text = "Nickname";
 			// 
-			// btn_ClearDungeons
+			// tabControlItems
 			// 
-			this.btn_ClearDungeons.Location = new System.Drawing.Point(17, 435);
-			this.btn_ClearDungeons.Name = "btn_ClearDungeons";
-			this.btn_ClearDungeons.Size = new System.Drawing.Size(197, 23);
-			this.btn_ClearDungeons.TabIndex = 19;
-			this.btn_ClearDungeons.Text = "Abrir todas as missões";
-			this.btn_ClearDungeons.UseVisualStyleBackColor = true;
-			this.btn_ClearDungeons.Click += new System.EventHandler(this.Btn_ClearDungeons_Click);
+			this.tabControlItems.Controls.Add(this.tabItemsPets);
+			this.tabControlItems.Controls.Add(this.tabPage2);
+			this.tabControlItems.Location = new System.Drawing.Point(13, 309);
+			this.tabControlItems.Name = "tabControlItems";
+			this.tabControlItems.SelectedIndex = 0;
+			this.tabControlItems.Size = new System.Drawing.Size(299, 167);
+			this.tabControlItems.TabIndex = 12;
+			// 
+			// tabItemsPets
+			// 
+			this.tabItemsPets.Location = new System.Drawing.Point(4, 26);
+			this.tabItemsPets.Name = "tabItemsPets";
+			this.tabItemsPets.Padding = new System.Windows.Forms.Padding(3);
+			this.tabItemsPets.Size = new System.Drawing.Size(291, 137);
+			this.tabItemsPets.TabIndex = 0;
+			this.tabItemsPets.Text = "Mascotes";
+			this.tabItemsPets.UseVisualStyleBackColor = true;
+			// 
+			// tabPage2
+			// 
+			this.tabPage2.Location = new System.Drawing.Point(4, 26);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(192, 70);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "tabPage2";
+			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// lbl_UsefulItems
+			// 
+			this.lbl_UsefulItems.AutoSize = true;
+			this.lbl_UsefulItems.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_UsefulItems.Location = new System.Drawing.Point(14, 290);
+			this.lbl_UsefulItems.Name = "lbl_UsefulItems";
+			this.lbl_UsefulItems.Size = new System.Drawing.Size(300, 16);
+			this.lbl_UsefulItems.TabIndex = 12;
+			this.lbl_UsefulItems.Text = "Itens Pré-definidos (Clique para add autom.)";
+			// 
+			// panel1
+			// 
+			this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel1.Controls.Add(this.check_UnlockCharacterMaxJob);
+			this.panel1.Controls.Add(this.check_UnlockCharacterLevel);
+			this.panel1.Controls.Add(this.btn_UnlockCharacter);
+			this.panel1.Controls.Add(this.combo_UnlockCharacter);
+			this.panel1.Controls.Add(this.lbl_UnlockCharacter);
+			this.panel1.Location = new System.Drawing.Point(542, 23);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(200, 157);
+			this.panel1.TabIndex = 19;
+			// 
+			// lbl_CharactersTools
+			// 
+			this.lbl_CharactersTools.AutoSize = true;
+			this.lbl_CharactersTools.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_CharactersTools.Location = new System.Drawing.Point(539, 4);
+			this.lbl_CharactersTools.Name = "lbl_CharactersTools";
+			this.lbl_CharactersTools.Size = new System.Drawing.Size(169, 16);
+			this.lbl_CharactersTools.TabIndex = 20;
+			this.lbl_CharactersTools.Text = "Utilitário de Personagens";
+			// 
+			// lbl_UnlockCharacter
+			// 
+			this.lbl_UnlockCharacter.AutoSize = true;
+			this.lbl_UnlockCharacter.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lbl_UnlockCharacter.Location = new System.Drawing.Point(9, 5);
+			this.lbl_UnlockCharacter.Name = "lbl_UnlockCharacter";
+			this.lbl_UnlockCharacter.Size = new System.Drawing.Size(175, 17);
+			this.lbl_UnlockCharacter.TabIndex = 27;
+			this.lbl_UnlockCharacter.Text = "Desbloquear Personagem";
+			// 
+			// combo_UnlockCharacter
+			// 
+			this.combo_UnlockCharacter.FormattingEnabled = true;
+			this.combo_UnlockCharacter.Location = new System.Drawing.Point(12, 25);
+			this.combo_UnlockCharacter.Name = "combo_UnlockCharacter";
+			this.combo_UnlockCharacter.Size = new System.Drawing.Size(97, 25);
+			this.combo_UnlockCharacter.TabIndex = 21;
+			// 
+			// btn_UnlockCharacter
+			// 
+			this.btn_UnlockCharacter.Location = new System.Drawing.Point(115, 25);
+			this.btn_UnlockCharacter.Name = "btn_UnlockCharacter";
+			this.btn_UnlockCharacter.Size = new System.Drawing.Size(69, 25);
+			this.btn_UnlockCharacter.TabIndex = 21;
+			this.btn_UnlockCharacter.Text = "Abrir";
+			this.btn_UnlockCharacter.UseVisualStyleBackColor = true;
+			this.btn_UnlockCharacter.Click += new System.EventHandler(this.Btn_UnlockCharacter_Click);
+			// 
+			// check_UnlockCharacterLevel
+			// 
+			this.check_UnlockCharacterLevel.AutoSize = true;
+			this.check_UnlockCharacterLevel.Location = new System.Drawing.Point(14, 56);
+			this.check_UnlockCharacterLevel.Name = "check_UnlockCharacterLevel";
+			this.check_UnlockCharacterLevel.Size = new System.Drawing.Size(77, 21);
+			this.check_UnlockCharacterLevel.TabIndex = 28;
+			this.check_UnlockCharacterLevel.Text = "Nível 85";
+			this.check_UnlockCharacterLevel.UseVisualStyleBackColor = true;
+			// 
+			// check_UnlockCharacterMaxJob
+			// 
+			this.check_UnlockCharacterMaxJob.AutoSize = true;
+			this.check_UnlockCharacterMaxJob.Location = new System.Drawing.Point(107, 56);
+			this.check_UnlockCharacterMaxJob.Name = "check_UnlockCharacterMaxJob";
+			this.check_UnlockCharacterMaxJob.Size = new System.Drawing.Size(84, 21);
+			this.check_UnlockCharacterMaxJob.TabIndex = 29;
+			this.check_UnlockCharacterMaxJob.Text = "4ª Classe";
+			this.check_UnlockCharacterMaxJob.UseVisualStyleBackColor = true;
 			// 
 			// Painel
 			// 
@@ -1165,10 +1388,12 @@
 			this.tabCharacters.PerformLayout();
 			this.panel_Coins.ResumeLayout(false);
 			this.panel_Coins.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_ChangeGP)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_ChangeVP)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_ChangeCash)).EndInit();
 			this.panel_SelectedCharacter.ResumeLayout(false);
 			this.panel_SelectedCharacter.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_ChangeCharJob)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.num_ChangeCharLevel)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picture_SelectedCharacter)).EndInit();
 			this.tabItems.ResumeLayout(false);
@@ -1189,6 +1414,9 @@
 			this.panel_UserInfo.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picture_VP)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picture_CASH)).EndInit();
+			this.tabControlItems.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -1283,6 +1511,23 @@
 		private System.Windows.Forms.Label lbl_ChangeVP;
 		private System.Windows.Forms.NumericUpDown num_ChangeVP;
 		private System.Windows.Forms.Button btn_ClearDungeons;
+		private System.Windows.Forms.Button btn_ChangeCharJob;
+		private System.Windows.Forms.Label lbl_ChangeCharJob;
+		private System.Windows.Forms.NumericUpDown num_ChangeCharJob;
+		private System.Windows.Forms.Button btn_ChangeGP;
+		private System.Windows.Forms.Label lbl_ChangeGP;
+		private System.Windows.Forms.NumericUpDown num_ChangeGP;
+		private System.Windows.Forms.Label lbl_UsefulItems;
+		private System.Windows.Forms.TabControl tabControlItems;
+		private System.Windows.Forms.TabPage tabItemsPets;
+		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.Label lbl_CharactersTools;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.ComboBox combo_UnlockCharacter;
+		private System.Windows.Forms.Label lbl_UnlockCharacter;
+		private System.Windows.Forms.Button btn_UnlockCharacter;
+		private System.Windows.Forms.CheckBox check_UnlockCharacterMaxJob;
+		private System.Windows.Forms.CheckBox check_UnlockCharacterLevel;
 	}
 }
 

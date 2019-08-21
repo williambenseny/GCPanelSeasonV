@@ -38,6 +38,10 @@ namespace GCPanelSeasonV.Values
 		{
 			return charactersValues;
 		}
+		public static string GetCharacterName(int charType)
+		{
+			return GetCharacterValues().Find(x => x.charType == charType).name;
+		}
 
 		public static List<object> itemGrades = new List<object>()
 		{
@@ -45,14 +49,6 @@ namespace GCPanelSeasonV.Values
 			new { name = "Raro", grade = 1 },
 			new { name = "Épico", grade = 2 },
 			new { name = "Lendário", grade = 3 },
-		};
-
-		public static List<object> charPromotion = new List<object>()
-		{
-			new { name = "1ª Classe", grade = 0 },
-			new { name = "2ª Classe", grade = 1 },
-			new { name = "3ª Classe", grade = 2 },
-			new { name = "4ª Classe", grade = 3 },
 		};
 
 		public static List<object> itemAttributes = new List<object>()
