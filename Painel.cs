@@ -395,10 +395,10 @@ namespace GCPanelSeasonV
 			List<object> attr2 = new List<object>(ValueHelper.itemAttributes);
 			List<object> attr3 = new List<object>(ValueHelper.itemAttributes);
 			List<object> attr4 = new List<object>(ValueHelper.itemAttributes);
-			List<CharacterValues> addItemCharCombo = new List<CharacterValues>(ValueHelper.GetCharacterValues());
-			List<CharacterValues> unlockCharacters = new List<CharacterValues>(ValueHelper.GetCharacterValues());
+			List<CharactersHelper> addItemCharCombo = new List<CharactersHelper>(ValueHelper.GetCharacterValues());
+			List<CharactersHelper> unlockCharacters = new List<CharactersHelper>(ValueHelper.GetCharacterValues());
 			addItemCharCombo.RemoveAt(0); //remove a opção 'todos'
-			List<CharacterValues> searchItemCharCombo = new List<CharacterValues>(ValueHelper.GetCharacterValues());
+			List<CharactersHelper> searchItemCharCombo = new List<CharactersHelper>(ValueHelper.GetCharacterValues());
 
 			combo_Grade.DataSource = ValueHelper.itemGrades;
 			combo_Grade.DisplayMember = "name";

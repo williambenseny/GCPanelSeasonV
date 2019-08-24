@@ -1,46 +1,24 @@
-﻿using GCPanelSeasonV.Properties;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace GCPanelSeasonV.Values
 {
 
 	public static class ValueHelper
 	{
-		private static List<CharacterValues> charactersValues = new List<CharacterValues>()
+		private static List<CharactersHelper> charactersValues = new List<CharactersHelper>()
 		{
-			new CharacterValues{charType = -1, name = "Todos"},
-			new CharacterValues{charType = 0, name = "Elesis", color = Color.FromArgb(145, 49, 80), icon = Resources.GC_Elesis_Icon},
-			new CharacterValues{charType = 1, name = "Lire", color = Color.FromArgb(16, 168, 5), icon = Resources.GC_Lire_Icon},
-			new CharacterValues{charType = 2, name = "Arme", color = Color.FromArgb(146, 14, 156), icon = Resources.GC_Arme_Icon},
-			new CharacterValues{charType = 3, name = "Lass", color = Color.FromArgb(16, 132, 204), icon = Resources.GC_Lass_Icon},
-			new CharacterValues{charType = 4, name = "Ryan", color = Color.FromArgb(196, 129, 4), icon = Resources.GC_Ryan_Icon},
-			new CharacterValues{charType = 5, name = "Ronan", color = Color.FromArgb(3, 3, 145), icon = Resources.GC_Ronan_Icon},
-			new CharacterValues{charType = 6, name = "Amy", color = Color.FromArgb(196, 4, 190), icon = Resources.GC_Amy_Icon},
-			new CharacterValues{charType = 7, name = "Jin", color = Color.FromArgb(186, 2, 26), icon = Resources.GC_Jin_Icon},
-			new CharacterValues{charType = 8, name = "Sieghart", color = Color.Black, icon = Resources.GC_Sieghart_Icon},
-			new CharacterValues{charType = 9, name = "Mari", color = Color.FromArgb(78, 110, 173), icon = Resources.GC_Mari_Icon},
-			new CharacterValues{charType = 10, name = "Dio", color = Color.FromArgb(101, 45, 125), icon = Resources.GC_Dio_Icon},
-			new CharacterValues{charType = 11, name = "Zero", color = Color.FromArgb(64, 135, 84), icon = Resources.GC_Zero_Icon},
-			new CharacterValues{charType = 12, name = "Rey", color = Color.FromArgb(163, 5, 155), icon = Resources.GC_Rey_Icon},
-			new CharacterValues{charType = 13, name = "Lupus", color = Color.FromArgb(78, 101, 102), icon = Resources.GC_Rufus_Icon},
-			new CharacterValues{charType = 14, name = "Lin", color = Color.FromArgb(78, 101, 102), icon = Resources.GC_Lin_Icon},
-			new CharacterValues{charType = 15, name = "Azin", color = Color.FromArgb(7, 157, 163), icon = Resources.GC_Elesis_Icon},
-			new CharacterValues{charType = 16, name = "Holy", color = Color.FromArgb(42, 163, 125), icon = Resources.GC_Elesis_Icon},
-			new CharacterValues{charType = 17, name = "Edel", color = Color.FromArgb(34, 121, 148), icon = Resources.GC_Elesis_Icon},
-			new CharacterValues{charType = 18, name = "Veigas", color = Color.FromArgb(68, 2, 97), icon = Resources.GC_Elesis_Icon},
+			new CharactersHelper{CharType = -1, Name = "Todos"},
+			new Elesis(), new Lire(), new Arme(), new Lass(), new Ryan(), new Ronan(),
+			new Amy(), new Jin(), new Sieghart(), new Mari(), new Dio(), new Zero(),
+			new Rey(), new Lupus(), new Lin(), new Azin(), new Holy(), new Edel(), new Veigas()
 		};
-		public static List<CharacterValues> GetCharacterValues()
+		public static List<CharactersHelper> GetCharacterValues()
 		{
 			return charactersValues;
 		}
 		public static string GetCharacterName(int charType)
 		{
-			return GetCharacterValues().Find(x => x.charType == charType).name;
+			return GetCharacterValues().Find(x => x.CharType == charType).Name;
 		}
 
 		public static List<object> itemGrades = new List<object>()

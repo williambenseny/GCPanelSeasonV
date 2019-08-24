@@ -1,10 +1,5 @@
 ﻿using GCPanelSeasonV.Values;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GCPanelSeasonV.Model
 {
@@ -23,7 +18,7 @@ namespace GCPanelSeasonV.Model
 		//Atributos Customizados
 		public string CharName
 		{
-			get => ValueHelper.GetCharacterValues().Find(x => x.charType == CharType).name;
+			get => ValueHelper.GetCharacterValues().Find(x => x.CharType == CharType).Name;
 		}
 
 		public string ListBoxCharInfo
@@ -33,7 +28,7 @@ namespace GCPanelSeasonV.Model
 
 		public Color CharColor
 		{
-			get => ValueHelper.GetCharacterValues().Find(x => x.charType == CharType).color;
+			get => ValueHelper.GetCharacterValues().Find(x => x.CharType == CharType).Color;
 		}
 
 		public string LevelPercentage
@@ -43,7 +38,7 @@ namespace GCPanelSeasonV.Model
 
 		public Image Image
 		{
-			get => ValueHelper.GetCharacterValues().Find(x => x.charType == CharType).icon;
+			get => ValueHelper.GetCharacterValues().Find(x => x.CharType == CharType).Icon;
 		}
 	}
 }
